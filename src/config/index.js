@@ -34,7 +34,7 @@ function createConfig(baseDir) {
 		view_directory: path.normalize(baseDir + '/views'),
 		view_file_extension: 'html',
 		view_partials_directory: path.normalize(baseDir + '/views/_partials')
-	});
+	}, config.nitro);
 
 	return config;
 }
