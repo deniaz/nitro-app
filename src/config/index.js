@@ -33,7 +33,8 @@ function createConfig(baseDir) {
 		base_path: path.normalize(baseDir),
 		view_directory: path.normalize(baseDir + '/views'),
 		view_file_extension: 'html',
-		view_partials_directory: path.normalize(baseDir + '/views/_partials')
+		view_partials_directory: path.normalize(baseDir + '/views/_partials'),
+		helpers_directory: path.normalize(baseDir + '/project/helpers/')
 	}, config.nitro);
 
 	return config;

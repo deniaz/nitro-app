@@ -22,7 +22,7 @@ function createApp(port, callback) {
 }
 
 function addHelper(name) {
-	hbs.registerHelper(name, require(config.nitro.base_path + '/project/helpers/' + name));
+	hbs.registerHelper(name, require(config.nitro.helpers_directory + name));
 }
 
 module.exports = function(cfg) {
