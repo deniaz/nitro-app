@@ -3,12 +3,13 @@
 var express = require('express');
 var compression = require('compression');
 var bodyParser = require('body-parser');
-
 var router = require('./router');
+var hbs = require('hbs');
 
 var app;
+var config;
 
-function createApp(port, config, callback) {
+function createApp(port, callback) {
 	app = express();
 	app.use(router(config));
 	app.use(compression());
@@ -20,6 +21,14 @@ function createApp(port, config, callback) {
 	app.listen(port, callback.apply(undefined, [ app ]));
 }
 
-module.exports = {
-	start: createApp
+function addHelper(name) {
+	hbs.registerHelper(name, require(config.nitro.base_path + '/project/helpers/' + name));
+}
+
+module.exports = function(cfg) {
+	config = cfg;
+	return {
+		start: createApp,
+		addHelper: addHelper
+	}
 }
