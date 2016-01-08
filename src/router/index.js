@@ -40,7 +40,7 @@ function resolveView(req, res, next) {
 	if (hasRoute(urlPath)) {
 		res.render(routes[urlPath]);
 	} else {
-		routes = createRoutes(config);
+		createRoutes(config);
 		if (hasRoute(urlPath)) {
 			res.render(routes[urlPath]);
 		} else {
@@ -72,18 +72,16 @@ function errorView(req, res) {
  * @param cleanRoute
  * @returns {Array} List of route variants.
  */
-function createRouteVariants(cleanRoute) {
-	var variants = [];
+function createRouteVariants(cleanRoute, filePath) {
+	routes[cleanRoute] = filePath;
 
 	if (cleanRoute !== cleanRoute.replace(/\//gi, '-')) {
-		variants.push(cleanRoute.replace(/\//gi, '-'));
+		routes[cleanRoute.replace(/\//gi, '-')] = filePath;
 	}
 
 	if (cleanRoute !== cleanRoute.replace(/_/gi, '-')) {
-		variants.push(cleanRoute.replace(/_/gi, '-'));
+		routes[cleanRoute.replace(/_/gi, '-')] = filePath;
 	}
-
-	return variants;
 }
 
 /**
@@ -95,24 +93,23 @@ function createRouteVariants(cleanRoute) {
 function createRoutes(config) {
 	var viewDir = config.nitro.view_directory;
 	var files = fs.readdirSync(viewDir);
-	var routes = [];
 
 	files.forEach(function(el) {
 		var stats = fs.lstatSync(viewDir + '/' + el);
 		if (stats.isFile()) {
 			var cleanFileName = path.basename(el, path.extname(el));
-			routes[cleanFileName] = el;
+			createRouteVariants(cleanFileName, el);
+		} else if (stats.isDirectory() && el !== path.basename(config.nitro.view_partials_directory)) {
+			fs.readdirSync(viewDir + '/' + el).forEach(function(file) {
+				var stats = fs.lstatSync(viewDir + '/' + el + '/' + file);
 
-			var variants = createRouteVariants(cleanFileName);
-			if (variants.length > 0) {
-				variants.forEach(function(variant) {
-					routes[variant] = el;
-				});
-			}
+				if (stats.isFile()) {
+					var cleanFileName = el + '/' + path.basename(el + '/' + file, path.extname(file));
+					createRouteVariants(cleanFileName, el + '/' + file);
+				}
+			});
 		}
 	});
-
-	return routes;
 }
 
 /**
@@ -123,7 +120,7 @@ function createRoutes(config) {
  */
 function createRouter(cfg) {
 	config = cfg;
-	routes = createRoutes(config);
+	createRoutes(config);
 
 	var router = express.Router({
 		caseSensitive: false,
