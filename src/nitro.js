@@ -1,3 +1,9 @@
+/**
+ * Terrific Nitro App
+ * Copyright (c) 2016 Robert Vogt <robert.vogt@namics.com>
+ * MIT Licensed
+ */
+
 'use strict';
 
 var express = require('express');
@@ -6,9 +12,24 @@ var bodyParser = require('body-parser');
 var router = require('./router');
 var hbs = require('hbs');
 
+/**
+ * Express App Instance
+ * @private
+ */
 var app;
+
+/**
+ * nitro/config Instance
+ * @private
+ */
 var config;
 
+/**
+ * Creates express app with default middleware.
+ *
+ * @param port
+ * @param callback {fn(app)}
+ */
 function createApp(port, callback) {
 	app = express();
 	app.use(router(config));
@@ -21,10 +42,18 @@ function createApp(port, callback) {
 	app.listen(port, callback.apply(undefined, [ app ]));
 }
 
+/**
+ * Adds a custom handlebars helper to the hbs instance
+ * @param name
+ */
 function addHelper(name) {
 	hbs.registerHelper(name, require(config.nitro.helpers_directory + name));
 }
 
+/**
+ * @param cfg nitro/config Object
+ * @returns {{start: createApp, addHelper: addHelper}}
+ */
 module.exports = function(cfg) {
 	config = cfg;
 	return {

@@ -1,6 +1,6 @@
 /**
- * nitro
- * Copyright (c) 2016 Robert Vogt
+ * Terrific Nitro App
+ * Copyright (c) 2016 Robert Vogt <robert.vogt@namics.com>
  * MIT Licensed
  */
 

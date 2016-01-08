@@ -1,3 +1,9 @@
+/**
+ * Terrific Nitro App
+ * Copyright (c) 2016 Robert Vogt <robert.vogt@namics.com>
+ * MIT Licensed
+ */
+
 'use strict';
 
 var fs = require('fs');
@@ -5,6 +11,13 @@ var path = require('path');
 var extend = require('extend');
 var config = {};
 
+/**
+ * Reads config.json from Nitro's basepaht
+ *
+ * @param path
+ * @returns string
+ * @throws Error
+ */
 function readConfig(path) {
 	try {
 		return fs.readFileSync(path, {
@@ -16,6 +29,11 @@ function readConfig(path) {
 	}
 }
 
+/**
+ * Parses string to a JSON object.
+ * @param raw
+ * @throws Error
+ */
 function convertConfig(raw) {
 	try {
 		return JSON.parse(raw);
@@ -24,6 +42,14 @@ function convertConfig(raw) {
 	}
 }
 
+/**
+ * Creates and returns Nitro Config Object.
+ *
+ * Adds reasonable default values and normalizes paths.
+ *
+ * @param baseDir
+ * @returns object
+ */
 function createConfig(baseDir) {
 	config = convertConfig(
 		readConfig(baseDir + '/config.json')
