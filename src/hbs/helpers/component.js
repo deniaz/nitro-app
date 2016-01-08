@@ -1,15 +1,37 @@
+/**
+ * Terrific Nitro App
+ * Copyright (c) 2016 Robert Vogt <robert.vogt@namics.com>
+ * MIT Licensed
+ */
+
 'use strict';
 
 var fs = require('fs');
 var path = require('path');
 var hbs = require('hbs');
 
+/**
+ * Renders Template.
+ * 
+ * @param template
+ * @param data
+ * @returns {*}
+ */
 function render(template, data) {
 	return new hbs.handlebars.SafeString(
 		hbs.handlebars.compile(fs.readFileSync(template, 'utf-8')).apply(undefined, [ data ])
 	);
 }
 
+/**
+ * Gets a file's full path.
+ *
+ * @param name
+ * @param variant
+ * @param config
+ * @param component
+ * @returns {string}
+ */
 function getFilePath(name, variant, config, component) {
 	if (variant) {
 		var file = name + '-' + variant + '.' + config.nitro.view_file_extension;
@@ -27,6 +49,11 @@ function getFilePath(name, variant, config, component) {
 	);
 }
 
+/**
+ * Reads file from disk.
+ * @param path
+ * @returns {*}
+ */
 function readFile(path) {
 	return fs.readFileSync(path, {
 		encoding: 'utf-8',
@@ -34,10 +61,22 @@ function readFile(path) {
 	});
 }
 
+/**
+ * Parses JSON from string.
+ * @param raw
+ */
 function parseJson(raw) {
 	return JSON.parse(raw);
 }
 
+/**
+ * Readers Component Data from data.json
+ * @param name
+ * @param variant
+ * @param config
+ * @param component
+ * @returns {*}
+ */
 function getComponentData(name, variant, config, component) {
 	if (variant) {
 		var file = name + '-' + variant + '.json';
@@ -83,10 +122,21 @@ function getComponentData(name, variant, config, component) {
 	}
 }
 
+/**
+ * Transforms name parameter.
+ * @param name
+ * @returns {string}
+ */
 function transformName(name) {
 	return name.toLowerCase();
 }
 
+/**
+ * Transforms variant parameter.
+ *
+ * @param variant
+ * @returns {*}
+ */
 function transformVariant(variant) {
 	if (typeof variant === 'string') {
 		return variant.toLowerCase();
@@ -95,6 +145,11 @@ function transformVariant(variant) {
 	}
 }
 
+/**
+ * Curry for handlebars helper function.
+ * @param config
+ * @returns {Function}
+ */
 function createHelper(config) {
 	return function(name, variant) {
 		name = transformName(name);
