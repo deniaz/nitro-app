@@ -5,12 +5,16 @@
   "main": "index.js",
   "author": "Robert Vogt <robert.vogt@namics.com>",
   "license": "MIT",
+  "scripts": {
+    "test": "jasmine"
+  },
   "dependencies": {
     "body-parser": "^1.14.2",
     "compression": "^1.6.0",
     "express": "^4.13.3",
     "extend": "^3.0.0",
     "hbs": "^4.0.0",
-    "hbs-utils": "0.0.3"
+    "hbs-utils": "0.0.3",
+    "jasmine": "^2.4.1"
   }
 }
