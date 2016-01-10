@@ -1,9 +1,6 @@
 'use strict';
 
-var path = require('path');
-
-describe('Terrific Nitro App', function() {
-	var mock = {
+var mock = {
 		nitro: {
 			base_path: '',
 			components: {
@@ -11,12 +8,18 @@ describe('Terrific Nitro App', function() {
 			}
 		}
 	};
+
+var path = require('path');
+var nitro = require('../');
+var config = require('../config');
+
+
+describe('Terrific Nitro App', function() {
+
 	var app;
 
 	beforeAll(function() {
-		app = require('nitro')(
-			require('nitro/config')(mock)
-		);
+		app = nitro(config(mock));
 	});
 
 	it('has a start method', function() {
@@ -25,9 +28,5 @@ describe('Terrific Nitro App', function() {
 
 	it('has an addHelper method', function() {
 		expect(app.addHelper).toEqual(jasmine.any(Function));
-	});
-
-	it('tests the start method with its callback function', function() {
-		expect(true).toBe(false);
 	});
 });

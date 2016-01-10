@@ -3,14 +3,13 @@
 var fs = require('fs');
 
 var config = { nitro: {} };
+var reader = require('../../src/config/reader');
 
 describe('Terrific Config Reader', function() {
-	var reader;
 	var cfg;
 
 	beforeAll(function() {
 		fs.writeFileSync('/tmp/config.json', JSON.stringify(config));
-		reader = require('nitro/config-reader');
 		cfg = reader('/tmp');
 	});
 

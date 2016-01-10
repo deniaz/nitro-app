@@ -1,9 +1,6 @@
 'use strict';
 
-var path = require('path');
-
-describe('Terrific Config', function() {
-	var mock = {
+var mock = {
 		nitro: {
 			base_path: '',
 			components: {
@@ -12,7 +9,11 @@ describe('Terrific Config', function() {
 		}
 	};
 
-	var config = require('nitro/config');
+var path = require('path');
+var config = require('../../config');
+
+describe('Terrific Config', function() {
+
 	var cfg;
 
 	beforeAll(function() {
