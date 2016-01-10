@@ -1,8 +1,8 @@
 'use strict';
 
 var mock = {
+		base_path: '',
 		nitro: {
-			base_path: '',
 			components: {
 				"atoms": {}
 			}
@@ -25,7 +25,7 @@ describe('Terrific Config', function() {
 	});
 
 	it('contains the base path', function() {
-		expect(cfg.nitro.base_path).toBeDefined();
+		expect(cfg.base_path).toBeDefined();
 	});
 
 	it('contains the view file extension', function() {

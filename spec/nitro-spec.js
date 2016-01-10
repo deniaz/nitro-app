@@ -1,8 +1,8 @@
 'use strict';
 
 var mock = {
+		base_path: '',
 		nitro: {
-			base_path: '',
 			components: {
 				"atoms": {}
 			}
