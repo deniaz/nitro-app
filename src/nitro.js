@@ -16,7 +16,7 @@ var hbs = require('hbs');
  * Express App Instance
  * @private
  */
-var app;
+var app = express();
 
 /**
  * nitro/config Instance
@@ -31,7 +31,6 @@ var config;
  * @param callback {fn(app)}
  */
 function createApp(port, callback) {
-	app = express();
 	app.use(router(config));
 	app.use(compression());
 	app.use(bodyParser.urlencoded({ extended: true }));
@@ -57,6 +56,7 @@ function addHelper(name) {
 module.exports = function(cfg) {
 	config = cfg;
 	return {
+		__app: app,
 		start: createApp,
 		addHelper: addHelper
 	}
