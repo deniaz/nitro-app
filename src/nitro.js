@@ -44,9 +44,13 @@ function createApp(port, callback) {
 /**
  * Adds a custom handlebars helper to the hbs instance
  * @param name
+ * @param callback
  */
-function addHelper(name) {
-	hbs.registerHelper(name, require(config.nitro.helpers_directory + name));
+function addHelper(name, callback) {
+	if (typeof callback === 'undefined') {
+		callback = require(config.nitro.helpers_directory + name);
+	}
+	hbs.registerHelper(name, callback);
 }
 
 /**
