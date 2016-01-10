@@ -40,7 +40,7 @@ function getFilePath(name, variant, config, component) {
 	}
 
 	return path.join(
-		config.nitro.base_path,
+		config.base_path,
 		component.path,
 		'/',
 		name,
@@ -85,7 +85,7 @@ function getComponentData(name, variant, config, component) {
 	}
 
 	var fullPath = path.join(
-		config.nitro.base_path,
+		config.base_path,
 		component.path,
 		'/',
 		name,
