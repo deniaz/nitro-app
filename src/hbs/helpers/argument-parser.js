@@ -28,7 +28,6 @@ function parseArguments(args) {
 	if (args.length === 1) {
 		return createFromContext(context);
 	} else if (Object.keys(context.hash).length > 0) {
-		console.log('Mixture of context and args');
 		// Mixture from arguments and context
 		return createFromAll(args, context);
 	}

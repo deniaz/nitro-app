@@ -12,8 +12,6 @@ var hbs = require('hbs');
 var injector = require('../../data/injector');
 var argumentParser = require('./argument-parser');
 
-console.log(hbs.version);
-
 /**
  * Renders Template.
  * 
