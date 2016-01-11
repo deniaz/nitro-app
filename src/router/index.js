@@ -10,6 +10,11 @@ var express = require('express');
 var fs = require('fs');
 var path = require('path');
 
+var regExpList = [
+	/\//gi,
+	/_/gi
+];
+
 /**
  * nitro/config Instance
  * @private
@@ -40,6 +45,7 @@ function resolveView(req, res, next) {
 	if (hasRoute(urlPath)) {
 		res.render(routes[urlPath]);
 	} else {
+		// Regenerate routes if route was not found, in case view file was created after nitro was started.
 		createRoutes(config);
 		if (hasRoute(urlPath)) {
 			res.render(routes[urlPath]);
@@ -75,13 +81,12 @@ function errorView(req, res) {
 function createRouteVariants(cleanRoute, filePath) {
 	routes[cleanRoute] = filePath;
 
-	if (cleanRoute !== cleanRoute.replace(/\//gi, '-')) {
-		routes[cleanRoute.replace(/\//gi, '-')] = filePath;
-	}
+	regExpList.forEach(function(regExp) {
+		if (cleanRoute !== cleanRoute.replace(regExp, '-')) {
+			routes[cleanRoute.replace(regExp, '-')] = filePath;
+		}
+	});
 
-	if (cleanRoute !== cleanRoute.replace(/_/gi, '-')) {
-		routes[cleanRoute.replace(/_/gi, '-')] = filePath;
-	}
 }
 
 /**
