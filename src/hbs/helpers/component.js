@@ -10,6 +10,9 @@ var fs = require('fs');
 var path = require('path');
 var hbs = require('hbs');
 var injector = require('../../data/injector');
+var argumentParser = require('./argument-parser');
+
+console.log(hbs.version);
 
 /**
  * Renders Template.
@@ -59,37 +62,15 @@ function getPathInfo(name, variant, config, component) {
 }
 
 /**
- * Transforms name parameter.
- * @param name
- * @returns {string}
- */
-function transformName(name) {
-	return name.toLowerCase();
-}
-
-/**
- * Transforms variant parameter.
- *
- * @param variant
- * @returns {*}
- */
-function transformVariant(variant) {
-	if (typeof variant === 'string') {
-		return variant.toLowerCase();
-	} else {
-		return null;
-	}
-}
-
-/**
  * Curry for handlebars helper function.
  * @param config
  * @returns {Function}
  */
 function createHelper(config) {
-	return function(name, variant) {
-		name = transformName(name);
-		variant = transformVariant(variant);
+	return function() {
+		var args = argumentParser(arguments);
+		var name = args.name;
+		var variant = args.variant;
 
 		for (var key in config.nitro.components) {
 			var component = config.nitro.components[key];
