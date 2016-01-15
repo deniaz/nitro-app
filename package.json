@@ -1,6 +1,6 @@
 {
-  "name": "nitro",
-  "version": "1.0.0",
+  "name": "express-nitro",
+  "version": "0.3.0-alpha.1",
   "description": "",
   "main": "index.js",
   "author": "Robert Vogt <robert.vogt@namics.com>",
