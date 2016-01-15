@@ -26,6 +26,7 @@ function createConfig(cfg) {
 		view_directory: path.normalize(config.base_path + '/views'),
 		view_file_extension: 'html',
 		view_partials_directory: path.normalize(config.base_path + '/views/_partials'),
+		view_data_directory: path.normalize(config.base_path + '/views/_data'),
 		helpers_directory: path.normalize(config.base_path + '/project/helpers/')
 	}, config.nitro);
 
