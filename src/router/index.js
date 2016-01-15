@@ -9,6 +9,7 @@
 var express = require('express');
 var fs = require('fs');
 var path = require('path');
+var injector = require('../data/view');
 
 var regExpList = [
 	/\//gi,
@@ -43,16 +44,24 @@ function resolveView(req, res, next) {
 	}
 
 	if (hasRoute(urlPath)) {
-		res.render(routes[urlPath]);
+		render(res, urlPath);
 	} else {
 		// Regenerate routes if route was not found, in case view file was created after nitro was started.
-		createRoutes(config);
+		createRoutes();
 		if (hasRoute(urlPath)) {
-			res.render(routes[urlPath]);
+			render(res, urlPath);
 		} else {
 			next();
 		}
 	}
+}
+
+function render(res, urlPath) {
+	res.locals = {
+		view_data: injector(config.nitro.view_data_directory, routes[urlPath])
+	}
+
+	res.render(routes[urlPath], res.locals.view_data);
 }
 
 /**
@@ -86,7 +95,13 @@ function createRouteVariants(cleanRoute, filePath) {
 			routes[cleanRoute.replace(regExp, '-')] = filePath;
 		}
 	});
+}
 
+function isValidDirectory(directory) {
+	return (
+		directory !== path.basename(config.nitro.view_partials_directory) &&
+		directory !== path.basename(config.nitro.view_data_directory)
+	);
 }
 
 /**
@@ -95,7 +110,7 @@ function createRouteVariants(cleanRoute, filePath) {
  * @param config
  * @returns {Array}
  */
-function createRoutes(config) {
+function createRoutes() {
 	var viewDir = config.nitro.view_directory;
 	var files = fs.readdirSync(viewDir);
 
@@ -104,7 +119,7 @@ function createRoutes(config) {
 		if (stats.isFile()) {
 			var cleanFileName = path.basename(el, path.extname(el));
 			createRouteVariants(cleanFileName, el);
-		} else if (stats.isDirectory() && el !== path.basename(config.nitro.view_partials_directory)) {
+		} else if (stats.isDirectory() && isValidDirectory(el)) {
 			fs.readdirSync(viewDir + '/' + el).forEach(function(file) {
 				var stats = fs.lstatSync(viewDir + '/' + el + '/' + file);
 
@@ -125,7 +140,7 @@ function createRoutes(config) {
  */
 function createRouter(cfg) {
 	config = cfg;
-	createRoutes(config);
+	createRoutes();
 
 	var router = express.Router({
 		caseSensitive: false,

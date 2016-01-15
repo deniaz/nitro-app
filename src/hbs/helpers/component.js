@@ -9,7 +9,7 @@
 var fs = require('fs');
 var path = require('path');
 var hbs = require('hbs');
-var injector = require('../../data/injector');
+var injector = require('../../data/component');
 var argumentParser = require('./argument-parser');
 
 /**
